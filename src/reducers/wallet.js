@@ -16,7 +16,7 @@ function convertObjToArr(obj) { // recebo um 'grande obj' contendo objetos
   const novoArr = [];
 
   filteredArr.forEach((curr) => novoArr.push(curr.code));
-  // acima: percorro o arr. Em cada posição, pego dentro de cada obj, somente a chave 'code'
+  // acima: percorro o arr. Em cada posição, pego dentro de cada obj somente a chave 'code'
   // depois coloco dentro do meu novoArr
 
   return novoArr;
