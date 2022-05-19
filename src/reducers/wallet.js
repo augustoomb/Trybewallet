@@ -1,10 +1,13 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-    isLoading: false,
-  },
+  // wallet: {
+  //   currencies: [],
+  //   expenses: [],
+  //   isLoading: false,
+  // },
+  currencies: [],
+  expenses: [],
+  isLoading: false,
 };
 
 function convertObjToArr(obj) { // recebo um 'grande obj' contendo objetos
@@ -22,6 +25,15 @@ function convertObjToArr(obj) { // recebo um 'grande obj' contendo objetos
   return novoArr;
 }
 
+// function addExpense(stateExpenses, objExpense) {
+//   return stateExpenses.push(objExpense);
+// }
+
+function mountExpense(objExpense, apiData) {
+  objExpense.exchangeRates = apiData;
+  return objExpense;
+}
+
 function wallet(state = INITIAL_STATE, action) {
   switch (action.type) {
   case 'REQUEST_API':
@@ -33,8 +45,14 @@ function wallet(state = INITIAL_STATE, action) {
     return {
       ...state,
       isLoading: false,
-      // currencies: action.data,
       currencies: convertObjToArr(action.data),
+    };
+  case 'SAVE_EXPENSE':
+    return {
+      ...state,
+      isLoading: false,
+      // expenses: { expenses: action.objExpense },
+      expenses: [...state.expenses, mountExpense(action.objExpense, action.apiData)],
     };
   default:
     return state;
