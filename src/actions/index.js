@@ -41,7 +41,6 @@ export function fetchData(objExpense) {
   };
 }
 
-// export const saveExpense = (objExpense) => ({
-//   type: 'SAVE_EXPENSE',
-//   objExpense,
-// });
+export const deleteExpense = (expense) => ({
+  type: 'DELETE_EXPENSE', expense,
+});

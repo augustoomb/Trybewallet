@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchAPI, fetchData } from '../actions';
+import { fetchAPI, fetchData, deleteExpense } from '../actions';
 
 class Wallet extends React.Component {
   constructor() {
@@ -15,38 +15,26 @@ class Wallet extends React.Component {
       tag: 'Lazer',
       lastCreatedId: -1,
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.cleanLocalState = this.cleanLocalState.bind(this);
-    this.sumValues = this.sumValues.bind(this);
-    this.getNameCurrency = this.getNameCurrency.bind(this);
-    this.getExValue = this.getExValue.bind(this);
-    this.convertValue = this.convertValue.bind(this);
   }
 
-  componentDidMount() { // ao iniciar componente, chamar a API para preencher o select
+  componentDidMount = () => { // ao iniciar componente, chamar a API para preencher o select
     const { dispatch } = this.props;
     dispatch(fetchAPI());
   }
 
-  getExValue(itemExp) {
+  getExValue = (itemExp) => {
     const { currency, exchangeRates } = itemExp;
     const exValue = exchangeRates[currency].ask;
-
     return parseFloat(exValue);
   }
 
-  getNameCurrency(itemExp) { // recebe a posição correta no arr de expenses
+  getNameCurrency = (itemExp) => { // recebe a posição correta no arr de expenses
     const { currency, exchangeRates } = itemExp;
     const { name } = exchangeRates[currency];
-
-    // divide a string exatamente na "/". Vira um arr de 2 posiçoes.
-    // ... peguei a posição 0
-    return name.split('/')[0];
+    return name.split('/')[0]; // divide a string exatamente na "/". Vira um arr de 2 posiçoes. // ... peguei a posição 0
   }
 
-  cleanLocalState() {
+  cleanLocalState = () => {
     this.setState({
       valor: '',
       descricao: '',
@@ -56,20 +44,19 @@ class Wallet extends React.Component {
     });
   }
 
-  sumValues(expenses) {
+  sumValues = (expenses) => {
     let total = 0;
     if (expenses.length > 0) {
       for (let i = 0; i < expenses.length; i += 1) {
         const ask = (parseFloat(expenses[i].exchangeRates[expenses[i].currency].ask));
         const value = parseFloat(expenses[i].value);
-
         total += (ask * value);
       }
     }
     return total.toFixed(2);
   }
 
-  handleSubmit() { // clique do botão adicionar despesa
+  handleSubmit = () => { // clique do botão adicionar despesa
     const { valor, descricao, moeda, metPag, tag, lastCreatedId } = this.state;
     const { dispatch } = this.props;
 
@@ -94,15 +81,18 @@ class Wallet extends React.Component {
     this.cleanLocalState();
   }
 
-  handleChange({ target }) { // alteração nos inputs altera o state local
+  handleChange = ({ target }) => { // alteração nos inputs altera o state local
     const { name, value } = target;
     this.setState({
       [name]: value,
     });
   }
 
-  convertValue(curr, exValue) { // recebe o currency já convertido para float e o cambio
-    return (curr * exValue).toFixed(2);
+  convertValue = (curr, exValue) => (curr * exValue).toFixed(2); // recebe o currency já convertido para float e o cambio
+
+  deleteExp = (exp) => {
+    const { dispatch } = this.props;
+    dispatch(deleteExpense(exp));
   }
 
   render() {
@@ -207,8 +197,8 @@ class Wallet extends React.Component {
             <th>Editar/Excluir</th>
           </tr>
           {
-            expenses.map((exp, index) => (
-              <tr key={ index }>
+            expenses.map((exp) => (
+              <tr key={ exp.id }>
                 <td>{ exp.description }</td>
                 <td>{ exp.tag }</td>
                 <td>{ exp.method }</td>
@@ -219,7 +209,15 @@ class Wallet extends React.Component {
                   { this.convertValue((parseFloat(exp.value)), this.getExValue(exp)) }
                 </td>
                 <td>Real</td>
-                <td>Botões</td>
+                <td>
+                  <button
+                    data-testid="delete-btn"
+                    onClick={ () => this.deleteExp(exp) }
+                    type="button"
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
             ))
           }

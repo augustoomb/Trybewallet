@@ -34,6 +34,10 @@ function mountExpense(objExpense, apiData) {
   return objExpense;
 }
 
+function deleteExpense(arrStateExp, objExpense) {
+  return arrStateExp.filter((exp) => exp.id !== objExpense.id);
+}
+
 function wallet(state = INITIAL_STATE, action) {
   switch (action.type) {
   case 'REQUEST_API':
@@ -53,6 +57,12 @@ function wallet(state = INITIAL_STATE, action) {
       isLoading: false,
       // expenses: { expenses: action.objExpense },
       expenses: [...state.expenses, mountExpense(action.objExpense, action.apiData)],
+    };
+  case 'DELETE_EXPENSE':
+    return {
+      ...state,
+      isLoading: false,
+      expenses: deleteExpense(state.expenses, action.expense),
     };
   default:
     return state;
