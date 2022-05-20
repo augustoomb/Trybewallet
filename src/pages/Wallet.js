@@ -7,7 +7,6 @@ class Wallet extends React.Component {
   constructor() {
     super();
 
-    // inputs do form
     this.state = {
       valor: '',
       descricao: '',
@@ -21,6 +20,9 @@ class Wallet extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.cleanLocalState = this.cleanLocalState.bind(this);
     this.sumValues = this.sumValues.bind(this);
+    this.getNameCurrency = this.getNameCurrency.bind(this);
+    this.getExValue = this.getExValue.bind(this);
+    this.convertValue = this.convertValue.bind(this);
   }
 
   componentDidMount() { // ao iniciar componente, chamar a API para preencher o select
@@ -28,11 +30,20 @@ class Wallet extends React.Component {
     dispatch(fetchAPI());
   }
 
-  handleChange({ target }) { // alteração nos inputs altera o state local
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+  getExValue(itemExp) {
+    const { currency, exchangeRates } = itemExp;
+    const exValue = exchangeRates[currency].ask;
+
+    return parseFloat(exValue);
+  }
+
+  getNameCurrency(itemExp) { // recebe a posição correta no arr de expenses
+    const { currency, exchangeRates } = itemExp;
+    const { name } = exchangeRates[currency];
+
+    // divide a string exatamente na "/". Vira um arr de 2 posiçoes.
+    // ... peguei a posição 0
+    return name.split('/')[0];
   }
 
   cleanLocalState() {
@@ -81,6 +92,17 @@ class Wallet extends React.Component {
     dispatch(fetchData(objExpense));
 
     this.cleanLocalState();
+  }
+
+  handleChange({ target }) { // alteração nos inputs altera o state local
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  convertValue(curr, exValue) { // recebe o currency já convertido para float e o cambio
+    return (curr * exValue).toFixed(2);
   }
 
   render() {
@@ -184,6 +206,23 @@ class Wallet extends React.Component {
             <th>Moeda de conversão</th>
             <th>Editar/Excluir</th>
           </tr>
+          {
+            expenses.map((exp, index) => (
+              <tr key={ index }>
+                <td>{ exp.description }</td>
+                <td>{ exp.tag }</td>
+                <td>{ exp.method }</td>
+                <td>{ (parseFloat(exp.value)).toFixed(2) }</td>
+                <td>{ this.getNameCurrency(exp) }</td>
+                <td>{ this.getExValue(exp).toFixed(2) }</td>
+                <td>
+                  { this.convertValue((parseFloat(exp.value)), this.getExValue(exp)) }
+                </td>
+                <td>Real</td>
+                <td>Botões</td>
+              </tr>
+            ))
+          }
         </table>
       </div>
     );
