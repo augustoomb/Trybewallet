@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchAPI, fetchData, deleteExpense } from '../actions';
+import '../style/Wallet.css';
+import logo from '../images/logo.png';
 
 class Wallet extends React.Component {
   constructor() {
     super();
-
     this.state = {
       valor: '',
       descricao: '',
@@ -59,13 +60,11 @@ class Wallet extends React.Component {
   handleSubmit = () => { // clique do botão adicionar despesa
     const { valor, descricao, moeda, metPag, tag, lastCreatedId } = this.state;
     const { dispatch } = this.props;
-
     const newId = lastCreatedId + 1;
 
     this.setState({
       lastCreatedId: newId,
     });
-
     const objExpense = {
       id: newId,
       value: valor,
@@ -104,19 +103,23 @@ class Wallet extends React.Component {
     return (
       <div>
         <header>
-          <span data-testid="email-field">{ email }</span>
-          <span data-testid="total-field">
-            {
-              expenses
-                ? (
-                  this.sumValues(expenses)
-                )
-                : 0
-            }
-          </span>
-          <span data-testid="header-currency-field">BRL</span>
+          <img src={ logo } alt="logo" />
+          <span className="email" data-testid="email-field">{ email }</span>
+          <div className="total">
+            <span data-testid="total-field">
+              {
+                expenses
+                  ? (
+                    this.sumValues(expenses)
+                  )
+                  : 0
+              }
+            </span>
+            <span data-testid="header-currency-field">BRL</span>
+          </div>
         </header>
         <form>
+          Valor: &nbsp;
           <input
             type="number"
             value={ valor }
@@ -124,6 +127,7 @@ class Wallet extends React.Component {
             name="valor"
             data-testid="value-input"
           />
+          Descrição: &nbsp;
           <input
             type="text"
             value={ descricao }
@@ -132,7 +136,7 @@ class Wallet extends React.Component {
             data-testid="description-input"
           />
           <label htmlFor="moeda">
-            Moeda
+            Moeda: &nbsp;
             <select
               name="moeda"
               id="moeda"
@@ -151,7 +155,7 @@ class Wallet extends React.Component {
             </select>
           </label>
           <label htmlFor="metPag">
-            Método de pagamento
+            Método de pagamento: &nbsp;
             <select
               name="metPag"
               id="metPag"
@@ -167,7 +171,7 @@ class Wallet extends React.Component {
             </select>
           </label>
           <label htmlFor="tag">
-            Tag
+            Tag: &nbsp;
             <select
               name="tag"
               id="tag"
@@ -184,7 +188,7 @@ class Wallet extends React.Component {
           </label>
           <button type="button" onClick={ this.handleSubmit }>Adicionar despesa</button>
         </form>
-        <table>
+        <table className="table">
           <tr>
             <th>Descrição</th>
             <th>Tag</th>

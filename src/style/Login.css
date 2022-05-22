@@ -1,0 +1,26 @@
+.page-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-content {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin-bottom: 10px;
+}
+
+.login-content > button {
+  background-color: #30B281;
+  color: white;
+  font-weight: bold;
+}
+
+.login-content > button[ disabled ] {
+  background-color: #73c585;
+  color: rgb(143, 168, 156);
+}

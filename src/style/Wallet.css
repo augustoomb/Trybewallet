@@ -1,0 +1,75 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header > img {
+  height: 25px;
+}
+
+form > button {
+  background-color: #0079FD;
+  color: white;
+  font-weight: 700;
+  padding: 7px 20px;
+  border: transparent;
+}
+
+form {
+  background-color: #272c34;
+  width: 100%;
+  color: white;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type=number] {
+  width: 80px;
+  margin-right: 20px;
+  height: 25px;
+  
+}
+
+input[type=text] {
+  width: 150px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+select {
+  width: 130px;
+  height: 25px;
+  margin-right: 20px;
+}
+
+table {
+  width: 100vw;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(226, 234, 240);
+}
+
+tr:nth-child(odd) {
+  background-color: rgb(200, 208, 214);
+}
+
+th {
+  background-color: #31393e;
+  color: white;
+}
+
+td {
+  text-align: center;
+}
+
+td > button {
+  background-color: #c9443f;
+  color: white;
+  font-weight: 700;
+  border: transparent;
+  padding: 3px 6px;
+}

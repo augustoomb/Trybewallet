@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../style/Login.css';
+import logo from '../images/logo.png';
 
 class Login extends React.Component {
   constructor() {
@@ -63,25 +65,28 @@ class Login extends React.Component {
     const { email, password, disabledButton } = this.state;
 
     return (
-      <div>
-        <h1>Login</h1>
-        <input
-          data-testid="email-input"
-          type="email"
-          onChange={ this.handleChange }
-          value={ email }
-          name="email"
-        />
-        <input
-          data-testid="password-input"
-          type="password"
-          onChange={ this.handleChange }
-          value={ password }
-          name="password"
-        />
-        <button disabled={ disabledButton } onClick={ this.handleSubmit } type="button">
-          Entrar
-        </button>
+      <div className="page-login">
+        <div className="login-content">
+          {/* <h1>Login</h1> */}
+          <img src={ logo } alt="logo" />
+          <input
+            data-testid="email-input"
+            type="email"
+            onChange={ this.handleChange }
+            value={ email }
+            name="email"
+          />
+          <input
+            data-testid="password-input"
+            type="password"
+            onChange={ this.handleChange }
+            value={ password }
+            name="password"
+          />
+          <button disabled={ disabledButton } onClick={ this.handleSubmit } type="button">
+            Entrar
+          </button>
+        </div>
       </div>);
   }
 }
